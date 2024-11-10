@@ -122,6 +122,10 @@
                             <label for="phone" class="form-label">Phone Number</label>
                             <input type="tel" class="form-control" id="phone" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="exp" class="form-label">Years of experience</label>
+                            <input type="number" class="form-control" id="exp" required>
+                        </div>
                         
                         <div class="mb-3">
                             <label for="location" class="form-label">Location</label>
@@ -243,6 +247,7 @@
                     email: document.getElementById('email').value,
                     phone: document.getElementById('phone').value,
                     location: document.getElementById('location').value,
+                    experience: document.getElementById('exp').value,
                     expertise: document.getElementById('skills').value,
                     portfolio: document.getElementById('portfolio').value,
                     registrationDate: new Date().toLocaleString('en-US', {
