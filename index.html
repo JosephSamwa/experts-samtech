@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SamTech Expert Registration</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+        }
+        
+        .navbar {
+            background-color: white !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        
+        .navbar-brand img {
+            height: 50px;
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,.1);
+            margin-top: 2rem;
+            padding: 2rem;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+        
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(52,152,219,.25);
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            border: none;
+            padding: 0.8rem 2rem;
+            font-weight: 500;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .alert {
+            display: none;
+            margin-top: 1rem;
+        }
+        
+        .loading-spinner {
+            display: none;
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .social-links a {
+            color: white;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="SamTech.jpg" alt="SamTech Logo">
+                <span class="ms-2 fw-bold">SamTech Solutions</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5 pt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="form-container">
+                    <h2 class="text-center mb-4">Expert Registration</h2>
+                    
+                    <!-- Alert Messages -->
+                    <div class="alert" id="alertMessage" role="alert"></div>
+                    
+                    <!-- Registration Form -->
+                    <form id="expertRegistrationForm">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="name" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="skills" class="form-label">Expertise</label>
+                            <select class="form-select" id="skills" required>
+                                <option value="">Choose what suits you best</option>
+                                
+                                <optgroup label="Professional Development Experts">
+                                    <option value="cv_writer">CV Writer & ATS Expert</option>
+                                    <option value="resume_writer">Resume Writer</option>
+                                    <option value="business_letter_writer">Business Letter Writer</option>
+                                    <option value="linkedin_optimizer">LinkedIn Optimization Expert</option>
+                                    <option value="interview_coach">Interview Coach</option>
+                                    <option value="job_application_specialist">Job Application Specialist</option>
+                                </optgroup>
+                                
+                                <optgroup label="Digital & IT Solutions Experts">
+                                    <option value="frontend_developer">Frontend Developer</option>
+                                    <option value="backend_developer">Backend Developer</option>
+                                    <option value="fullstack_developer">Full Stack Developer</option>
+                                    <option value="mobile_app_developer">Mobile App Developer</option>
+                                    <option value="software_developer">Software Developer</option>
+                                    <option value="social_media_manager">Social Media Manager</option>
+                                    <option value="seo_specialist">SEO Specialist</option>
+                                    <option value="digital_marketer">Digital Marketing Expert</option>
+                                    <option value="ecommerce_specialist">E-commerce Specialist</option>
+                                    <option value="cloud_engineer">Cloud Services Engineer</option>
+                                    <option value="it_support">IT Support Specialist</option>
+                                    <option value="cybersecurity_expert">Cybersecurity Expert</option>
+                                </optgroup>
+                                
+                                <optgroup label="Business Support Experts">
+                                    <option value="virtual_assistant">Virtual Assistant</option>
+                                    <option value="data_entry">Data Entry Specialist</option>
+                                    <option value="academic_writer">Academic Writer</option>
+                                    <option value="grant_writer">Grant Writer</option>
+                                    <option value="graphic_designer">Graphic Designer</option>
+                                    <option value="corporate_trainer">Corporate Trainer</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="portfolio" class="form-label">Portfolio/CV Link</label>
+                            <input type="url" class="form-control" id="portfolio" required>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">
+                                <span class="spinner-border spinner-border-sm loading-spinner" role="status" aria-hidden="true"></span>
+                                Register as Expert
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="container">
+            <p>© 2024 SamTech Website Solutions. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
+    
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAujFKDx_T7ZSEyYGmvbdhkmn8SdKCNXjs",
+            authDomain: "hope-kokeno-cbo.firebaseapp.com",
+            databaseURL: "https://hope-kokeno-cbo-default-rtdb.firebaseio.com",
+            projectId: "hope-kokeno-cbo",
+            storageBucket: "hope-kokeno-cbo.appspot.com",
+            messagingSenderId: "508964589142",
+            appId: "1:508964589142:web:33a4d190a497bb5ecab5f7"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Form submission handling
+        const form = document.getElementById('expertRegistrationForm');
+        const loadingSpinner = document.querySelector('.loading-spinner');
+        const alertMessage = document.getElementById('alertMessage');
+
+        function showAlert(message, type) {
+            alertMessage.textContent = message;
+            alertMessage.className = `alert alert-${type}`;
+            alertMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                alertMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            loadingSpinner.style.display = 'inline-block';
+
+            try {
+                const expertData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    location: document.getElementById('location').value,
+                    expertise: document.getElementById('skills').value,
+                    portfolio: document.getElementById('portfolio').value,
+                    registrationDate: new Date().toLocaleString('en-US', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        hour12: true
+                    })
+                };
+
+                await database.ref('SamTech-experts').push(expertData);
+                
+                showAlert('Registration successful! We will contact you soon.', 'success');
+                form.reset();
+            } catch (error) {
+                showAlert('Error during registration. Please try again.', 'danger');
+                console.error('Registration error:', error);
+            } finally {
+                loadingSpinner.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
