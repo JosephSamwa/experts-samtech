@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SamTech Experts Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            padding-top: 60px;
+        }
+        
+        .navbar {
+            background-color: white !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        
+        .navbar-brand img {
+            height: 50px;
+        }
+        
+        .dashboard-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,.1);
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        
+        .expert-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            transition: transform 0.2s;
+        }
+        
+        .expert-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,.1);
+        }
+        
+        .contact-btn {
+            padding: 0.5rem;
+            margin: 0.2rem;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: transform 0.2s;
+        }
+        
+        .contact-btn:hover {
+            transform: scale(1.1);
+            color: white;
+        }
+        
+        .btn-email { background-color: #ea4335; }
+        .btn-phone { background-color: #4285f4; }
+        .btn-whatsapp { background-color: #25d366; }
+        
+        .filter-container {
+            margin-bottom: 2rem;
+        }
+        
+        .loading-spinner {
+            display: none;
+            margin: 2rem auto;
+        }
+        
+        .expertise-badge {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="SamTech.jpg" alt="SamTech Logo">
+                <span class="ms-2 fw-bold">SamTech Admin Dashboard</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="dashboard-container">
+            <h2 class="text-center mb-4">Registered Experts</h2>
+            
+            <!-- Filters -->
+            <div class="filter-container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <select class="form-select" id="expertiseFilter">
+                            <option value="">All Expertise</option>
+                            <optgroup label="Professional Development">
+                                <option value="cv_writer">CV Writer & ATS Expert</option>
+                                <option value="resume_writer">Resume Writer</option>
+                                <option value="business_letter_writer">Business Letter Writer</option>
+                                <option value="linkedin_optimizer">LinkedIn Optimization Expert</option>
+                                <option value="interview_coach">Interview Coach</option>
+                                <option value="job_application_specialist">Job Application Specialist</option>
+                            </optgroup>
+                            <optgroup label="Digital & IT Solutions">
+                                <option value="frontend_developer">Frontend Developer</option>
+                                <option value="backend_developer">Backend Developer</option>
+                                <option value="fullstack_developer">Full Stack Developer</option>
+                                <option value="mobile_app_developer">Mobile App Developer</option>
+                                <option value="software_developer">Software Developer</option>
+                                <option value="social_media_manager">Social Media Manager</option>
+                                <option value="seo_specialist">SEO Specialist</option>
+                                <option value="digital_marketer">Digital Marketing Expert</option>
+                                <option value="ecommerce_specialist">E-commerce Specialist</option>
+                                <option value="cloud_engineer">Cloud Services Engineer</option>
+                                <option value="it_support">IT Support Specialist</option>
+                                <option value="cybersecurity_expert">Cybersecurity Expert</option>
+                            </optgroup>
+                            <optgroup label="Business Support">
+                                <option value="virtual_assistant">Virtual Assistant</option>
+                                <option value="data_entry">Data Entry Specialist</option>
+                                <option value="academic_writer">Academic Writer</option>
+                                <option value="grant_writer">Grant Writer</option>
+                                <option value="graphic_designer">Graphic Designer</option>
+                                <option value="corporate_trainer">Corporate Trainer</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search by name or location...">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Loading Spinner -->
+            <div class="text-center loading-spinner">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            
+            <!-- Experts List -->
+            <div id="expertsList"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
+    
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAujFKDx_T7ZSEyYGmvbdhkmn8SdKCNXjs",
+            authDomain: "hope-kokeno-cbo.firebaseapp.com",
+            databaseURL: "https://hope-kokeno-cbo-default-rtdb.firebaseio.com",
+            projectId: "hope-kokeno-cbo",
+            storageBucket: "hope-kokeno-cbo.appspot.com",
+            messagingSenderId: "508964589142",
+            appId: "1:508964589142:web:33a4d190a497bb5ecab5f7"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Elements
+        const expertsList = document.getElementById('expertsList');
+        const loadingSpinner = document.querySelector('.loading-spinner');
+        const expertiseFilter = document.getElementById('expertiseFilter');
+        const searchInput = document.getElementById('searchInput');
+
+        // Format expertise value to display text
+        function formatExpertise(expertise) {
+            return expertise
+                .split('_')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        }
+
+        // Create expert card
+        function createExpertCard(expert, id) {
+            return `
+                <div class="expert-card" data-expertise="${expert.expertise}">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5>${expert.name}</h5>
+                            <span class="expertise-badge">${formatExpertise(expert.expertise)}</span>
+                            <p class="mb-1"><i class="fas fa-map-marker-alt me-2"></i>${expert.location}</p>
+                            <p class="mb-1">⏱️ ${expert.experience} years of experience</p>
+                            <p class="mb-1"><small class="text-muted">Registered: ${expert.registrationDate}</small></p>
+                            <p class="mb-1"><a href="${expert.portfolio}" target="_blank" class="text-primary">View Portfolio</a></p>
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            <a href="mailto:${expert.email}" class="contact-btn btn-email" title="Email">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            <a href="tel:${encodeURIComponent(expert.phone)}" class="contact-btn btn-phone" title="Call">
+                                <i class="fas fa-phone"></i>
+                            </a>
+                            <a href="https://wa.me/${expert.phone.replace(/\D/g,'')}" target="_blank" class="contact-btn btn-whatsapp" title="WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Filter experts
+        function filterExperts() {
+            const expertise = expertiseFilter.value;
+            const searchText = searchInput.value.toLowerCase();
+            const expertCards = document.querySelectorAll('.expert-card');
+
+            expertCards.forEach(card => {
+                const expertName = card.querySelector('h5').textContent.toLowerCase();
+                const expertLocation = card.querySelector('.fa-map-marker-alt').nextSibling.textContent.toLowerCase();
+                const expertExpertise = card.dataset.expertise;
+                
+                const matchesExpertise = !expertise || expertExpertise === expertise;
+                const matchesSearch = !searchText || 
+                    expertName.includes(searchText) || 
+                    expertLocation.includes(searchText);
+
+                card.style.display = matchesExpertise && matchesSearch ? 'block' : 'none';
+            });
+        }
+
+        // Event listeners for filters
+        expertiseFilter.addEventListener('change', filterExperts);
+        searchInput.addEventListener('input', filterExperts);
+
+        // Fetch and display experts
+        async function loadExperts() {
+            loadingSpinner.style.display = 'block';
+            expertsList.innerHTML = '';
+
+            try {
+                const snapshot = await database.ref('SamTech-experts').once('value');
+                const experts = snapshot.val();
+
+                if (experts) {
+                    Object.entries(experts).forEach(([id, expert]) => {
+                        expertsList.innerHTML += createExpertCard(expert, id);
+                    });
+                } else {
+                    expertsList.innerHTML = '<p class="text-center">No experts registered yet.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching experts:', error);
+                expertsList.innerHTML = '<p class="text-center text-danger">Error loading experts. Please try again.</p>';
+            } finally {
+                loadingSpinner.style.display = 'none';
+            }
+        }
+
+        // Load experts when page loads
+        document.addEventListener('DOMContentLoaded', loadExperts);
+    </script>
+</body>
+</html>
